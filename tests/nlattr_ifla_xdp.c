@@ -44,6 +44,10 @@ enum { IFLA_XDP = 43 };
 # define IFLA_XDP_HW_PROG_ID 7
 #endif
 
+#ifndef HAVE_IFLA_XDP_EXPECTED_FD
+enum { IFLA_XDP_EXPECTED_FD = 8 };
+#endif
+
 #ifndef XDP_ATTACHED_NONE
 # define XDP_ATTACHED_NONE 0
 #endif
@@ -54,6 +58,10 @@ enum { IFLA_XDP = 43 };
 
 #define IFLA_ATTR IFLA_XDP
 #include "nlattr_ifla.h"
+
+#ifndef FD9_PATH
+#define FD9_PATH ""
+#endif
 
 int
 main(void)
@@ -117,6 +125,18 @@ main(void)
 					      print_quoted_hex, 1,
 					      printf("%u", num));
 	}
+
+	/* IFLA_XDP_EXPECTED_FD */
+	TEST_NESTED_NLATTR_OBJECT_EX(fd, nlh0, hdrlen,
+				     init_ifinfomsg, print_ifinfomsg,
+				     IFLA_XDP_EXPECTED_FD, pattern, num, 1,
+				     printf("%d", num));
+
+	int exp_fd = 9;
+	TEST_NESTED_NLATTR_OBJECT_EX(fd, nlh0, hdrlen,
+				     init_ifinfomsg, print_ifinfomsg,
+				     IFLA_XDP_EXPECTED_FD, pattern, exp_fd, 1,
+				     printf("9" FD9_PATH));
 
 	puts("+++ exited with 0 +++");
 	return 0;

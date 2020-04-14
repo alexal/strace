@@ -158,6 +158,7 @@ check_PROGRAMS = $(PURE_EXECUTABLES) \
 	msg_control-v \
 	net-accept-connect \
 	net-tpacket_stats-success \
+	nlattr_ifla_xdp-y \
 	netlink_inet_diag \
 	netlink_netlink_diag \
 	netlink_unix_diag \
